@@ -3,6 +3,7 @@ import cors from "cors"
 import morgan from "morgan"
 import rateLimit from "express-rate-limit"
 import router from "./routes/routes.js"
+import proxyRoute from "./routes/proxy.route.js"
 
 const app = express()
 
@@ -19,6 +20,9 @@ app.use(rateLimit({
 
 // routes
 app.use("/api", router)
+
+// proxy
+app.use("/", proxyRoute)
 
 // health check
 app.get("/", (req, res) => {

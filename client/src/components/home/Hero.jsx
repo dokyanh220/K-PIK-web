@@ -16,7 +16,7 @@ export function Hero() {
           </svg>
         </div>
       </div>
-      <p className="text-slate-500 text-lg font-medium">Fast & Simple Video Downloader</p>
+      <p className="text-slate-500 dark:text-slate-400 text-lg font-medium transition-colors">Fast & Simple Video Downloader</p>
     </div>
   );
 }

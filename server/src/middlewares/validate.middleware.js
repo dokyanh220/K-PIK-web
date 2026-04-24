@@ -1,11 +1,11 @@
-import { isTikTokUrl } from "../utils/validate.js";
+import { detectAndValidateUrl } from "../utils/validate.js";
 
 export function validateByPlatform(req, res, next) {
     let { url } = req.body;
     let platform = req.platform;
 
     if (platform === "tiktok") {
-        if (!isTikTokUrl(url)) {
+        if (!detectAndValidateUrl(url).valid) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid TikTok URL"
@@ -13,9 +13,12 @@ export function validateByPlatform(req, res, next) {
         }
     }
 
+    if (platform === "instagram") {
+
+    }
+
     // thêm sau
     // if (platform === "facebook") { ... }
-    // if (platform === "instagram") { ... }
     // if (platform === "pinterest") { ... }
 
     next();

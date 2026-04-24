@@ -1,11 +1,11 @@
 # K-PIK - Fast & Simple Video Downloader
 
-K-PIK là một ứng dụng Web giúp tải video, hình ảnh và nhạc từ nhiều nền tảng mạng xã hội khác nhau (hiện tại hỗ trợ TikTok). Hệ thống bao gồm Frontend (ReactJS) và Backend (Node.js/Express).
+K-PIK là một ứng dụng Web giúp tải video, hình ảnh và nhạc từ nhiều nền tảng mạng xã hội khác nhau (hiện tại hỗ trợ TikTok, Instagram). Hệ thống bao gồm Frontend (ReactJS) và Backend (Node.js/Express).
 
 ## 🚀 Tính năng
 
 - **Tải video TikTok không có logo (watermark-free)**
-- **Tải ảnh từ TikTok Slideshow**
+- **Tải ảnh từ TikTok Slideshow và Instagram**
 - **Tải nhạc MP3 từ video**
 - Giao diện tối giản, hiện đại (hiệu ứng Glassmorphism, Tailwind CSS)
 - Tự động nhận diện thiết bị và hỗ trợ dán liên kết nhanh

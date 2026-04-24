@@ -5,7 +5,7 @@ import { Hero } from "./components/home/Hero";
 import { PlatformSelector } from "./components/home/PlatformSelector";
 import { UrlInput } from "./components/home/UrlInput";
 import { ResultSection } from "./components/home/ResultSection";
-import { getDataTikTok } from "./services/api";
+import { getDataTikTok, getDataInstagram } from "./services/api";
 
 function App() {
   const [url, setUrl] = useState("");
@@ -13,21 +13,48 @@ function App() {
   const [platform, setPlatform] = useState("tiktok");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      return document.documentElement.classList.contains("dark");
+    }
+    return false;
+  });
+
+  const toggleDarkMode = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    if (newDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   const handleDownload = async () => {
     if (!url) return;
 
+    if (platform === "tiktok" && !url.includes("tiktok.com")) {
+      alert("Vui lòng nhập đúng liên kết TikTok!");
+      return;
+    }
+    if (platform === "instagram" && !url.includes("instagram.com")) {
+      alert("Vui lòng nhập đúng liên kết Instagram!");
+      return;
+    }
+
     setLoading(true);
+    setHasResult(false);
+    setData(null);
 
     try {
-      const res = await getDataTikTok(url);
+      const res = platform === "tiktok" ? await getDataTikTok(url) : await getDataInstagram(url);
 
       console.log("API:", res);
 
       setData(res);
       setHasResult(true);
     } catch (err) {
-      alert("Lỗi API");
+      alert("Lỗi kết nối hoặc không tìm thấy nội dung!");
     }
 
     setLoading(false);
@@ -35,14 +62,15 @@ function App() {
 
 
   return (
-    <div className="min-h-screen pb-16 pt-8 px-4 flex flex-col items-center selection:bg-indigo-200">
-      <Header />
+    <div className="min-h-screen pb-16 pt-8 px-4 flex flex-col items-center selection:bg-indigo-200 dark:bg-slate-900 transition-colors duration-300">
+      <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       <Hero />
 
       <div className="w-full max-w-3xl space-y-8 relative">
         <PlatformSelector platform={platform} setPlatform={setPlatform} />
 
         <UrlInput
+          platform={platform}
           url={url}
           setUrl={setUrl}
           onDownload={handleDownload}
