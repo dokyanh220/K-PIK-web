@@ -2,6 +2,8 @@
 
 K-PIK là một ứng dụng Web giúp tải video, hình ảnh và nhạc từ nhiều nền tảng mạng xã hội khác nhau (hiện tại hỗ trợ TikTok, Instagram). Hệ thống bao gồm Frontend (ReactJS) và Backend (Node.js/Express).
 
+![alt text](image.png)
+
 ## 🚀 Tính năng
 
 - **Tải video TikTok không có logo (watermark-free)**
