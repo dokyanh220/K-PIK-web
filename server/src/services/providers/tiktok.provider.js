@@ -11,8 +11,6 @@ export async function getTikTok(url) {
 
     const d = res.result;
 
-    console.log("TIKTOK RAW:", d);
-
     // slideshow
     if (Array.isArray(d.images) && d.images.length > 0) {
         return {
@@ -49,8 +47,5 @@ export async function getTikTok(url) {
             duration: d.video?.duration || 0
         };
     }
-
-    console.log("VIDEO FIELD:", d.video);
-
     throw new Error("Unknown TikTok format");
 }

@@ -13,22 +13,31 @@ function App() {
   const [platform, setPlatform] = useState("tiktok");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
+  const [isDarkMode, setIsDarkMode] = React.useState(() => {
     if (typeof window !== "undefined") {
-      return document.documentElement.classList.contains("dark");
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        return savedTheme === "dark";
+      }
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
     return false;
   });
 
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    if (newDarkMode) {
+  React.useEffect(() => {
+    if (isDarkMode) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev) => !prev);
   };
+
 
   const handleDownload = async () => {
     if (!url) return;
@@ -39,6 +48,11 @@ function App() {
     }
     if (platform === "instagram" && !url.includes("instagram.com")) {
       alert("Vui lòng nhập đúng liên kết Instagram!");
+      return;
+    }
+
+    if (["youtube", "soundcloud", "twitter"].includes(platform)) {
+      alert("Tính năng đang phát triển!");
       return;
     }
 

@@ -12,7 +12,7 @@ export async function getInstagram(url) {
             throw new Error("No media found");
         }
 
-        // 🔥 phân loại
+        // tách ảnh và video
         const images = urls.filter(u =>
             u.includes(".jpg") ||
             u.includes(".jpeg") ||
@@ -25,21 +25,21 @@ export async function getInstagram(url) {
             u.includes("video")
         );
 
-        // 🎬 Ưu tiên trả về video nếu có (kèm cover là ảnh đầu tiên)
-        if (videos.length > 0) {
+        // video
+        if (videos.length > 0 && images.length === 0) {
             return {
                 type: "video",
                 video: videos[0],
-                images: images,
+                images: [],
                 music: null,
                 author: "Instagram",
                 title: "IG Video",
-                duration: 0,
-                cover: images.length > 0 ? images[0] : null
+                duration: videos,
+                cover: videos[0]
             };
         }
 
-        // 🖼️ Nếu chỉ có ảnh (Album)
+        // album (>= 1 ảnh)
         if (images.length > 0) {
             return {
                 type: "image",
@@ -50,6 +50,18 @@ export async function getInstagram(url) {
                 title: "IG Images",
                 duration: 0,
                 cover: images[0]
+            };
+        }
+
+        if (videos.length > 0 && images.length > 0) {
+            return {
+                type: "carousel",
+                items: urls.map(u => ({
+                    type: u.includes(".mp4") ? "video" : "image",
+                    url: u
+                })),
+                duration: 0,
+                cover: images[0] || videos[0]
             };
         }
 

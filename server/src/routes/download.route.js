@@ -7,5 +7,6 @@ const router = express.Router()
 
 router.post("/tiktok", detectPlatformMiddleware, validateByPlatform, downloadData)
 router.post("/instagram", detectPlatformMiddleware, validateByPlatform, downloadData)
+router.post("/facebook", detectPlatformMiddleware, validateByPlatform, downloadData)
 
 export default router

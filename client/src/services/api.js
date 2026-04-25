@@ -19,3 +19,12 @@ export const getDataInstagram = async (url) => {
         throw err.response?.data || err.message;
     }
 };
+
+export const getDataFacebook = async (url) => {
+    try {
+        const res = await axios.post(`${API_URL}/download/facebook`, { url });
+        return res.data.data;
+    } catch (err) {
+        throw err.response?.data || err.message;
+    }
+};
