@@ -2,8 +2,9 @@ import { Play, Music, Download, Image as ImageIcon, Link as LinkIcon, Check } fr
 import { useState } from "react";
 import { cn } from "../../utils/cn";
 
-export function ResultSection({ data }) {
+export function ResultSection({ data, platform }) {
   const [copiedIdx, setCopiedIdx] = useState(null);
+  const isYoutube = platform === "youtube";
 
   const handleCopy = (url, idx) => {
     navigator.clipboard.writeText(url);
@@ -28,13 +29,21 @@ export function ResultSection({ data }) {
   return (
     <div className="animate-fade-in-up" style={{ animationDelay: "300ms" }}>
       <div className="flex items-center gap-3 mb-6 pl-2">
-        <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-500/20 border border-blue-200 dark:border-blue-500/40 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm font-bold shadow-sm dark:shadow-[0_0_10px_rgba(59,130,246,0.3)] transition-all">
+        <div className={cn(
+          "w-8 h-8 rounded-full border text-sm font-bold flex items-center justify-center shadow-sm transition-all",
+          isYoutube 
+            ? "bg-red-50 dark:bg-red-500/20 border-red-200 dark:border-red-500/40 text-red-600 dark:text-red-400 dark:shadow-[0_0_10px_rgba(239,68,68,0.3)]"
+            : "bg-blue-50 dark:bg-blue-500/20 border-blue-200 dark:border-blue-500/40 text-blue-600 dark:text-blue-400 dark:shadow-[0_0_10px_rgba(59,130,246,0.3)]"
+        )}>
           3
         </div>
         <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 tracking-wide transition-colors">Kết quả phân tích</h2>
       </div>
 
-      <div className="p-6 glass-card flex flex-col md:flex-row gap-8 mb-8 group border-slate-200 dark:border-blue-500/30">
+      <div className={cn(
+        "p-6 glass-card flex flex-col md:flex-row gap-8 mb-8 group border-slate-200",
+        isYoutube ? "dark:border-red-500/30" : "dark:border-blue-500/30"
+      )}>
         <div className="relative w-full md:w-56 aspect-video md:aspect-square rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-900 shrink-0 shadow-xl dark:shadow-2xl border border-slate-200 dark:border-white/5">
           <img
             src={data.cover ? `${PROXY_URL}?url=${encodeURIComponent(data.cover)}` : defaultCover}
@@ -43,7 +52,12 @@ export function ResultSection({ data }) {
             className="w-full h-full object-cover opacity-90 dark:opacity-70 group-hover:scale-110 transition-transform duration-700 ease-out"
           />
           <div className="absolute inset-0 flex items-center justify-center bg-blue-900/10 dark:bg-blue-900/20 group-hover:bg-transparent transition-colors duration-500">
-            <div className="w-16 h-16 rounded-full bg-white/50 dark:bg-blue-500/20 backdrop-blur-xl border border-white/50 dark:border-blue-400/40 flex items-center justify-center text-blue-600 dark:text-blue-400 shadow-lg dark:shadow-[0_0_20px_rgba(59,130,246,0.3)] group-hover:scale-110 transition-all duration-500">
+            <div className={cn(
+              "w-16 h-16 rounded-full backdrop-blur-xl border flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-500",
+              isYoutube 
+                ? "bg-white/50 dark:bg-red-500/20 border-white/50 dark:border-red-400/40 text-red-600 dark:text-red-400 dark:shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                : "bg-white/50 dark:bg-blue-500/20 border-white/50 dark:border-blue-400/40 text-blue-600 dark:text-blue-400 dark:shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+            )}>
               <Play fill="currentColor" size={24} className="ml-1" />
             </div>
           </div>
@@ -79,7 +93,12 @@ export function ResultSection({ data }) {
                 download
                 target="_blank"
                 rel="noreferrer"
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:hover:from-blue-500 dark:hover:to-indigo-500 text-white shadow-lg dark:shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-xl dark:hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all duration-300 rounded-xl font-bold flex items-center justify-center gap-3 py-4 text-base"
+                className={cn(
+                  "w-full text-white shadow-lg transition-all duration-300 rounded-xl font-bold flex items-center justify-center gap-3 py-4 text-base",
+                  isYoutube
+                    ? "bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 dark:shadow-[0_0_20px_rgba(239,68,68,0.3)] dark:hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+                    : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:shadow-[0_0_20px_rgba(59,130,246,0.3)] dark:hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+                )}
               >
                 <Download size={18} />
                 <span>Tải video (MP4)</span>
@@ -95,7 +114,9 @@ export function ResultSection({ data }) {
                 className={cn(
                   "w-full transition-all duration-300 rounded-xl font-bold flex items-center justify-center gap-3 py-4 text-base",
                   data.type === "video"
-                    ? "bg-slate-100 dark:bg-slate-800/40 text-blue-600 dark:text-blue-400 border border-slate-200 dark:border-blue-500/20 hover:bg-slate-200 dark:hover:bg-slate-800 hover:border-blue-300 dark:hover:border-blue-500/40"
+                    ? isYoutube
+                      ? "bg-slate-100 dark:bg-slate-800/40 text-red-600 dark:text-red-400 border border-slate-200 dark:border-red-500/20 hover:bg-slate-200 dark:hover:bg-slate-800 hover:border-red-300 dark:hover:border-red-500/40"
+                      : "bg-slate-100 dark:bg-slate-800/40 text-blue-600 dark:text-blue-400 border border-slate-200 dark:border-blue-500/20 hover:bg-slate-200 dark:hover:bg-slate-800 hover:border-blue-300 dark:hover:border-blue-500/40"
                     : "bg-gradient-to-r from-cyan-500 to-blue-500 dark:from-cyan-600 dark:to-blue-600 text-white shadow-lg dark:shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-xl dark:hover:shadow-[0_0_30px_rgba(34,211,238,0.5)]"
                 )}
               >

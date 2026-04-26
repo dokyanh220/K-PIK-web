@@ -1,25 +1,29 @@
 import { detectAndValidateUrl } from "../utils/validate.js";
 
-export function validateByPlatform(req, res, next) {
-    let { url } = req.body;
-    let platform = req.platform;
+/**
+ * Middleware tổng quát để validate URL và xác định platform.
+ * Nó sẽ kiểm tra URL có hợp lệ không và gán platform vào req.platform.
+ */
+export function validateUrlMiddleware(req, res, next) {
+    const { url } = req.body;
 
-    if (platform === "tiktok") {
-        if (!detectAndValidateUrl(url).valid) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid TikTok URL"
-            });
-        }
+    if (!url) {
+        return res.status(400).json({
+            success: false,
+            message: "URL is required"
+        });
     }
 
-    if (platform === "instagram") {
+    const result = detectAndValidateUrl(url);
 
+    if (!result.valid) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid URL or unsupported platform"
+        });
     }
 
-    // thêm sau
-    // if (platform === "facebook") { ... }
-    // if (platform === "pinterest") { ... }
-
+    // Gán platform vào request để các controller/service sử dụng
+    req.platform = result.platform;
     next();
 }

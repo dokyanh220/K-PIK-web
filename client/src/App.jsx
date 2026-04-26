@@ -5,7 +5,7 @@ import { Hero } from "./components/home/Hero";
 import { PlatformSelector } from "./components/home/PlatformSelector";
 import { UrlInput } from "./components/home/UrlInput";
 import { ResultSection } from "./components/home/ResultSection";
-import { getDataTikTok, getDataInstagram } from "./services/api";
+import { getDataTikTok, getDataInstagram, getDataYoutube, getDataFacebook } from "./services/api";
 
 function App() {
   const [url, setUrl] = useState("");
@@ -50,8 +50,12 @@ function App() {
       alert("Vui lòng nhập đúng liên kết Instagram!");
       return;
     }
+    if (platform === "youtube" && !(url.includes("youtube.com") || url.includes("youtu.be"))) {
+      alert("Vui lòng nhập đúng liên kết Youtube!");
+      return;
+    }
 
-    if (["youtube", "soundcloud", "twitter"].includes(platform)) {
+    if (["soundcloud", "twitter"].includes(platform)) {
       alert("Tính năng đang phát triển!");
       return;
     }
@@ -61,7 +65,11 @@ function App() {
     setData(null);
 
     try {
-      const res = platform === "tiktok" ? await getDataTikTok(url) : await getDataInstagram(url);
+      const res =
+        platform === "tiktok" ? await getDataTikTok(url) :
+          platform === "instagram" ? await getDataInstagram(url) :
+            platform === "youtube" ? await getDataYoutube(url) :
+              platform === "facebook" ? await getDataFacebook(url) : "";
 
       console.log("API:", res);
 
@@ -96,7 +104,7 @@ function App() {
           </div>
         )}
 
-        {hasResult && <ResultSection data={data} />}
+        {hasResult && <ResultSection data={data} platform={platform} />}
       </div>
 
       <Footer />

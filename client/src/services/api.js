@@ -27,4 +27,13 @@ export const getDataFacebook = async (url) => {
     } catch (err) {
         throw err.response?.data || err.message;
     }
-};
+};
+
+export const getDataYoutube = async (url) => {
+    try {
+        const res = await axios.post(`${API_URL}/download/youtube`, { url });
+        return res.data.data;
+    } catch (err) {
+        throw err.response?.data || err.message;
+    }
+};

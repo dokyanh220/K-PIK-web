@@ -37,6 +37,13 @@ export function detectAndValidateUrl(url) {
             return { valid: true, platform: "pinterest" };
         }
 
+        // 🟣 Youtube
+        if (
+            ["youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"].includes(host)
+        ) {
+            return { valid: true, platform: "youtube" };
+        }
+
         return { valid: false, platform: null };
 
     } catch (err) {
